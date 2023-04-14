@@ -59,12 +59,15 @@ class MovieParse:
             # Insert movie and person connections
             for role, csv_file in [('cast', moviecast_csv),
                                 ('director', director_csv),
-                                ('producer', writer_csv),
                                 ('writer', writer_csv),
-                                ('composer', writer_csv),
-                                ('cinematographer', writer_csv)]:
+                                ]:
                 role_df = pd.read_html(str(imdb_person_transform(role)(self.root)))[0]
                 role_df['movie_id'] = self.movieid
+                role_df['person_id'] = role_df['ID'].astype(str)
+                role_df = role_df[['person_id', 'movie_id']]
+                last_id = pd.read_csv(csv_file)['id'].max() if os.path.exists(csv_file) else 0
+                role_df['id'] = range(int(last_id) + 1, int(last_id) + len(role_df) + 1)
+                role_df = role_df[['id', 'movie_id', 'person_id']]
                 role_df.to_csv(csv_file, mode='a', header=False, index=False)
 
         # Insert personal data
@@ -72,6 +75,9 @@ class MovieParse:
                                 'watch_date': [self.watchdate],
                                 'rating': [self.rating],
                                 'method': [self.method]})
+        last_id = pd.read_csv(personal_csv)['id'].max() if os.path.exists(personal_csv) else 0
+        new_entry['id'] = last_id + 1
+        new_entry = new_entry[['id', 'movie_id', 'watch_date', 'rating', 'method']]
         new_entry.to_csv(personal_csv, mode='a', header=False, index=False)
 
 
