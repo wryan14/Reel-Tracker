@@ -22,7 +22,6 @@ eggs/
 
 # Jupyter Notebook
 .ipynb_checkpoints/
-*.ipynb
 
 # System / backup files
 .DS_Store

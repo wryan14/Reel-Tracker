@@ -1,6 +1,19 @@
 from lxml import etree
 
 def imdb_person_transform(person_role='cast'):
+    """
+    Create an XSLT transformation to extract person data for a specific role from an IMDb movie XML.
+
+    Parameters
+    ----------
+    person_role : str, optional
+        The role of the person in the movie, e.g., 'cast', 'director', etc. (default is 'cast')
+
+    Returns
+    -------
+    lxml.etree.XSLT
+        The XSLT transformation for extracting person data of the specified role.
+    """
     xsl_root = etree.XML('''\
     <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -27,6 +40,19 @@ def imdb_person_transform(person_role='cast'):
 
 
 def imdb_company_transform(company_role='production-companies'):
+    """
+    Create an XSLT transformation to extract company data for a specific role from an IMDb movie XML.
+
+    Parameters
+    ----------
+    company_role : str, optional
+        The role of the company in the movie, e.g., 'production-companies' (default is 'production-companies')
+
+    Returns
+    -------
+    lxml.etree.XSLT
+        The XSLT transformation for extracting company data of the specified role.
+    """
     xsl_root = etree.XML('''\
     <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -53,6 +79,14 @@ def imdb_company_transform(company_role='production-companies'):
 
 
 def imdb_movie_transform():
+    """
+    Create an XSLT transformation to extract movie data from an IMDb movie XML.
+
+    Returns
+    -------
+    lxml.etree.XSLT
+        The XSLT transformation for extracting movie data.
+    """
     xsl_root = etree.XML('''\
     <xsl:stylesheet version="1.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

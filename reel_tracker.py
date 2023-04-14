@@ -16,7 +16,42 @@ moviecast_csv = os.path.join(script_dir, 'data', 'moviecast.csv')
 writer_csv = os.path.join(script_dir, 'data', 'writer.csv')
 
 class MovieParse:
+    """
+    A class to parse and insert movie and personal data into CSV files.
+    
+    Attributes
+    ----------
+    movieid : str
+        The IMDb ID of the movie.
+    watchdate : str
+        The date the movie was watched.
+    rating : int
+        The rating assigned to the movie.
+    method : str
+        The method used to watch the movie.
+
+    Methods
+    -------
+    check_exists(csv_file: str) -> bool
+        Check if the movie exists in the given CSV file.
+    insert_data(personal_only: bool = False) -> None
+        Insert movie and personal data into appropriate CSV files.
+    """
     def __init__(self, movieid, watchdate, rating, method):
+        """
+        Initialize a MovieParse object with movie ID, watch date, rating, and method.
+
+        Parameters
+        ----------
+        movieid : str
+            The IMDb ID of the movie.
+        watchdate : str
+            The date the movie was watched.
+        rating : int
+            The rating assigned to the movie.
+        method : str
+            The method used to watch the movie.
+        """
         self.movieid = movieid
         self.watchdate = watchdate
         self.rating = rating
@@ -30,13 +65,36 @@ class MovieParse:
             self.root = imdb_api(self.movieid)
             self.insert_data()
 
-    def check_exists(self, csv_file):
+    def check_exists(self, csv_file: str) -> bool:
+        """
+        Check if the movie exists in the given CSV file.
+
+        Parameters
+        ----------
+        csv_file : str
+            The CSV file to check for the movie.
+
+        Returns
+        -------
+        bool
+            True if the movie exists in the CSV file, False otherwise.
+        """
         if pd.read_csv(csv_file).id.astype(str).str.lstrip('0').str.contains(self.movieid.lstrip('0')).any():
             return True
         else:
             return False
 
-    def insert_data(self, personal_only=False):
+    def insert_data(self, personal_only: bool = False) -> None:
+        """
+        Insert movie and personal data into appropriate CSV files.
+
+        If personal_only is True, insert only personal data. Otherwise, insert movie and personal data.
+
+        Parameters
+        ----------
+        personal_only : bool, optional
+            Whether to insert only personal data or not (default is False).
+        """
         if not personal_only:
             # Insert movie data
             tmpdf = pd.read_html(str(imdb_movie_transform()(self.root)))[0]
@@ -80,7 +138,20 @@ class MovieParse:
         new_entry.to_csv(personal_csv, mode='a', header=False, index=False)
 
 
-def imdb_api(movieid):
+def imdb_api(movieid: str) -> etree._Element:
+    """
+    Get the XML root of an IMDb movie object.
+
+    Parameters
+    ----------
+    movieid : str
+        The IMDb ID of the movie.
+
+    Returns
+    -------
+    etree._Element
+        The XML root of the IMDb movie object.
+    """
     ia = IMDb()
     tmp = ia.get_movie(movieid)
     root = etree.fromstring(tmp.asXML())
