@@ -9,7 +9,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Define the CSV file names in a 'data' folder within the same directory
 person_csv = os.path.join(script_dir, 'data', 'person.csv')
-production_company_csv = os.path.join(script_dir, 'data', 'production_company.csv')
 personal_csv = os.path.join(script_dir, 'data', 'personal.csv')
 imdb_movies_csv = os.path.join(script_dir, 'data', 'imdb_movies.csv')
 director_csv = os.path.join(script_dir, 'data', 'director.csv')
@@ -49,12 +48,11 @@ class MovieParse:
                 person_dfs.append(pd.read_html(str(imdb_person_transform(role)(self.root)))[0])
             all_persons = pd.concat(person_dfs).reset_index(drop=True)
             all_persons = all_persons.drop_duplicates()
+            all_persons = all_persons[~all_persons['ID'].isnull()]
+            all_persons['ID'] = all_persons['ID'].apply(lambda x: int(x))
             all_persons.to_csv(person_csv, mode='a', header=False, index=False)
 
-            # Insert company data
-            prod_comp = pd.read_html(str(imdb_company_transform('production-companies')(self.root)))[0]
-            prod_comp = prod_comp.drop_duplicates()
-            prod_comp.to_csv(production_company_csv, mode='a', header=False, index=False)
+
 
             # Insert movie and person connections
             for role, csv_file in [('cast', moviecast_csv),
@@ -88,7 +86,7 @@ def imdb_api(movieid):
     return root
 
 if __name__ == "__main__":
-    movie_id = "0133093"
+    movie_id = "0099810"
     watch_date = "2023-04-14"
     rating = 9
     method = "Blu-ray"
