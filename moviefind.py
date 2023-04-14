@@ -8,7 +8,7 @@ from transformations import imdb_person_transform, imdb_company_transform, imdb_
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Define the CSV file names in a 'data' folder within the same directory
-person_csv = os.path.join(script_dir, 'data', 'person.csv')
+person_csv = os.path.join(script_dir, 'data', 'imdb_person.csv')
 personal_csv = os.path.join(script_dir, 'data', 'personal.csv')
 imdb_movies_csv = os.path.join(script_dir, 'data', 'imdb_movies.csv')
 director_csv = os.path.join(script_dir, 'data', 'director.csv')
