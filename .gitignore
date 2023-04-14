@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+dist/
+eggs/
+*.egg-info/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# System / backup files
+.DS_Store
+Thumbs.db
+
+# Ignore the msedgedriver.exe file used by Selenium
+/edgedriver_win64/msedgedriver.exe
+
+# venv
+/venv
+/.venv
