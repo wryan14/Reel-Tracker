@@ -61,7 +61,8 @@ class MovieParse:
                                 ]:
                 role_df = pd.read_html(str(imdb_person_transform(role)(self.root)))[0]
                 role_df['movie_id'] = self.movieid
-                role_df['person_id'] = role_df['ID'].astype(str)
+                role_df = role_df[~role_df['ID'].isnull()]
+                role_df['person_id'] = role_df['ID'].apply(lambda x: str(int(x)))
                 role_df = role_df[['person_id', 'movie_id']]
                 last_id = pd.read_csv(csv_file)['id'].max() if os.path.exists(csv_file) else 0
                 role_df['id'] = range(int(last_id) + 1, int(last_id) + len(role_df) + 1)
